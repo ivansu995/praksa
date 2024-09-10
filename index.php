@@ -47,30 +47,6 @@ echo "Svi kljucevi: <br>";
 $keys = $redis->keys('*');
 foreach ($keys as $key) echo $key . "<br>"; 
 
-
-// while($row = $stmt->fetch()) {
-// 	if (!$redis->exists($row->title)) {
-// 		echo $row->id . " | " . $row->title . '<br>';
-// 		$file_content = file_get_contents($row->path);
-// 		$redis->set($row->title, $file_content);
-// 	}
-// 	if ($redis->exists($row->title)) {
-// 		echo "From redis: $row->title <br>";
-// 		// echo $redis->get($row->title) . "<br>";
-// 	}
-// }
-
-
-
-
-// $conn = new mysqli($host, $user, $pass, $db);
-
-// if ($conn->connect_error) {
-// 	die("Connection failed: " . $conn->connect_error);
-// }
-
-// $results = $conn->query("SELECT * FROM test");
-
 ?>
 <!-- <style>
  table, th, td {
