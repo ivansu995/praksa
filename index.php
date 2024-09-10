@@ -48,31 +48,8 @@ $keys = $redis->keys('*');
 foreach ($keys as $key) echo $key . "<br>"; 
 
 ?>
-<!-- <style>
- table, th, td {
- 	border: 1px solid black;
- 	border-collapse: collapse;
- }
- </style>
-
- <table style="width:50%">
- 	<thead>
- 		<tr>
- 			<th>ID</th>
- 			<th>Text</th>
- 		</tr>
- 	</thead>
- 	<tbody>
- 		<?php foreach ($results as $res): ?>
- 			<tr>
- 				<td>
- 					<?= $res["id"] ?>
- 				</td>
- 				<td>
- 					<?= $res["text"] ?>
- 				</td>
- 			</tr>
- 		<?php endforeach ?>
-		 
- 	</tbody>
-</table>  -->
+<style>
+	body {
+		background-color: red;
+	}
+</style>
