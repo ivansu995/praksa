@@ -1,14 +1,14 @@
 name: Docker Image CI for GitHub Container registry
 
 on:
-  pull_request:
-    types:
-      - closed
-    branches:
-      - master
-  # push:
+  # pull_request:
+  #   types:
+  #     - closed
   #   branches:
   #     - master
+  push:
+    branches:
+      - master
 
 jobs:
   build_and_publish:
