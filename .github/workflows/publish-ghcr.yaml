@@ -1,0 +1,31 @@
+name: Docker Image CI for GitHub Container registry
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
+
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+      - uses: actions/checkout@v3
+
+      - name: Login to ghcr
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build ./php-apache-image/ --tag ghcr.io/${{ github.repostiroy_owner }}/${{ github.repository }}:latest
+      
+      - name: Push docker image
+        run: |
+          docker push ghcr.io/${{ github.repostiroy_owner }}/${{ github.repository }}:latest
