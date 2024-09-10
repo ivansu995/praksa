@@ -26,7 +26,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build ./php-apache-image --tag ghcr.io${{ github.repostiroy_owner }}/${{ github.repository }}:latest
+          docker build . --tag ghcr.io${{ github.repostiroy_owner }}/${{ github.repository }}:latest
       
       - name: Push docker image
         run: |
