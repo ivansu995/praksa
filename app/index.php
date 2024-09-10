@@ -50,6 +50,6 @@ foreach ($keys as $key) echo $key . "<br>";
 ?>
 <style>
 	body {
-		background-color: blue;
+		background-color: red;
 	}
 </style>
