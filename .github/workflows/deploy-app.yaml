@@ -23,11 +23,11 @@ jobs:
       - name: Pull docker    
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} << 'EOF'
-            echo ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }} | sudo docker login ghrc.io -u ${{ github.actor }} --password-stdin
+            echo ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }} | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
             cd /home/ec2-user/docker
             sudo docker-compose down
             sudo docker rmi ghcr.io/ivansu995/praksa:latest
-            sudo docker pull ghrc.io/ivansu995/praksa:latest
+            sudo docker pull ghcr.io/ivansu995/praksa:latest
             export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             export DB_USERNAME=${{ secrets.DB_USERNAME }}
             export DB_HOST=${{ secrets.DB_HOST }}
