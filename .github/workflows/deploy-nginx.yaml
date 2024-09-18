@@ -1,10 +1,10 @@
 name: Deploy Nginx to EC2
 
 on:
-  workflow_run:
-    workflows: ["Nginx Proxy Docker Image CI for GitHub Container registry"]
-    types:
-      - completed
+  # workflow_run:
+  #   workflows: ["Nginx Proxy Docker Image CI for GitHub Container registry"]
+  #   types:
+  #     - completed
 
 jobs:
   build:
