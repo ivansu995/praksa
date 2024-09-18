@@ -1,0 +1,44 @@
+name: Deploy Nginx to EC2
+
+on:
+  workflow_run:
+    workflows: ["Nginx Proxy Docker Image CI for GitHub Container registry"]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USER }}
+          key: ${{ secrets.AWS_KEY }}
+          port: 22
+      
+      - name: Login to ghcr
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+
+      - name: Stop containers and remove image
+        run: |
+          cd /home/ec2-user/docker
+          sudo docker compose down
+          sudo docker rmi ghcr.io/ivansu995/nginx:latest
+
+      - name: Pull Docker Nginx image
+        run: |
+          sudo docker pull ghrc.io/ivansu995/nginx:latest
+          export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          export DB_USERNAME=${{ secrets.DB_USERNAME }}
+          export DB_HOST=${{ secrets.DB_HOST }}
+          export DB_DBNAME=${{ secrets.DB_DBNAME }}
+
+      - name: Run images
+        run: |
+          sudo docker compose up -d

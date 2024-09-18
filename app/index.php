@@ -1,8 +1,8 @@
 <?php
-$host = 'mysql-db';
-$user = 'ivan';
-$pass = 'ivan';
-$db = 'test_database';
+$host = getenv('DB_HOST');
+$user = getenv('DB_USERNAME');
+$pass = getenv('DB_PASSWORD');
+$db = getenv('DB_DBNAME');
 
 $redis = new Redis();
 $redis->connect('redis', 6379);
