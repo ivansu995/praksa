@@ -26,8 +26,10 @@ jobs:
             echo ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }} | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
             cd /home/ec2-user/docker
             sudo docker-compose down
-            sudo docker rmi ghcr.io/ivansu995/praksa:latest
+            sudo docker rmi $(sudo docker images | awk '{print 1}')
             sudo docker pull ghcr.io/ivansu995/praksa:latest
+            sudo docker pull ghcr.io/ivansu995/redis:latest
+            sudo docker pull ghcr.io/ivansu995/nginx:latest
             export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             export DB_USERNAME=${{ secrets.DB_USERNAME }}
             export DB_HOST=${{ secrets.DB_HOST }}
