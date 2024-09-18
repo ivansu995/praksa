@@ -7,7 +7,7 @@ $db = getenv('DB_DBNAME');
 $redis = new Redis();
 $redis->connect('redis', 6379);
 
-echo "Connection to redis successfull <br>";
+echo "Connection to redis is successfull <br>";
  
 echo "Server is running: " . $redis->ping() . "<br>";
 
