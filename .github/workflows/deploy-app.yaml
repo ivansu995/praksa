@@ -22,7 +22,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} << 'EOF'
             cd /home/ec2-user/docker
-            sudo docker compose down
+            sudo docker-compose down
             sudo docker rmi ghcr.io/ivansu995/praksa:latest
             sudo docker pull ghrc.io/ivansu995/praksa:latest
             export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
@@ -30,7 +30,7 @@ jobs:
             export DB_HOST=${{ secrets.DB_HOST }}
             export DB_DBNAME=${{ secrets.DB_DBNAME }}
             cd /home/ec2-user/docker
-            sudo docker compose up -d
+            sudo docker-compose up -d
           EOF
         # uses: appleboy/ssh-action@v0.1.2
         # with:
