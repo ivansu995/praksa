@@ -1,0 +1,86 @@
+# YAML file for creating Docker containers
+# 1. PHP apache server - image building from Dockerfile in ./php-apache directory to install mysqli,
+# 2. NginX proxy server 
+# 3. MySQL container
+#
+# NOTE: Check all paths!!
+# NOTE: Set correct path for nginx.conf on the host
+
+
+services:
+  php-apache-server:
+    container_name: apache-server
+    image: ghcr.io/ivansu995/praksa:latest
+    # build: php-apache/php-apache-image/
+    restart: unless-stopped
+    # volumes:
+    #   - type: bind
+    #     source: php-apache/app-files/
+    #     target: /var/www/html
+    depends_on:
+      - mysql-db
+      - redis
+    networks:
+      - public_network
+      - private_network
+
+  nginx-proxy:
+    container_name: nginx-server
+    image: nginx:1.0.0
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    volumes:
+      - type: bind
+        source: nginx/nginx-proxy-config/
+        target: /etc/nginx/conf.d/
+    depends_on:
+      - php-apache-server
+    networks:
+      - public_network
+
+  mysql-db:
+    container_name: mysql-db
+    image: mysql
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: test_database
+      MYSQL_USER: ivan
+      MYSQL_PASSWORD: ivan
+    networks:
+      - private_network
+
+  redis:
+    container_name: redis
+    image: redis
+    restart: unless-stopped
+    command: [redis-server, /usr/local/etc/redis/redis.conf]
+    
+    volumes:
+      - type: bind
+        source: redis/
+        target: /usr/local/etc/redis/
+    depends_on:
+      - mysql-db
+    networks:
+      - private_network
+
+networks:
+  public_network:
+    name: public_network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.10.0/24
+  private_network:
+    name: private_network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.11.0/24
+
+volumes:
+  db_data:
