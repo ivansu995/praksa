@@ -10,13 +10,37 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      #- name: Add SSH key
+        #uses: webfactory/ssh-agent@v0.5.3
+        #with:
+        #  ssh-private-key: ${{ secrets.AWS_KEY }}
+
+      # - name: Pull docker    
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} << 'EOF'
+      #       cd /home/ec2-user/docker
+      #       sudo docker compose down
+      #       sudo docker rmi ghcr.io/ivansu995/praksa:latest
+      #       sudo docker pull ghrc.io/ivansu995/praksa:latest
+      #       export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+      #       export DB_USERNAME=${{ secrets.DB_USERNAME }}
+      #       export DB_HOST=${{ secrets.DB_HOST }}
+      #       export DB_DBNAME=${{ secrets.DB_DBNAME }}
+      #       cd /home/ec2-user/docker
+      #       sudo docker compose up -d
+      #     EOF
       - name: Deploy to server
-        uses: appleboy/ssh-action@v0.1.2
+        uses: fifsky/ssh-action@master
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_KEY }}
-          port: 22
+          command: | 
+            ls -a
+            whoami
       
       - name: Login to ghcr
         uses: docker/login-action@v3
