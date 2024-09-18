@@ -21,8 +21,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build ./nginx/ --tag ghcr.io${{ github.repostiroy_owner }}/nginx-proxy:latest
+          docker build ./nginx/ --tag ghcr.io/ivansu995/nginx-proxy:latest
       
       - name: Push docker image
         run: |
-          docker push ghcr.io${{ github.repostiroy_owner }}/nginx-proxy:latest
+          docker push ghcr.io/ivansu995/nginx-proxy:latest
