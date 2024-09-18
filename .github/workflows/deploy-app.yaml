@@ -20,24 +20,20 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.AWS_KEY }}
 
+            #sudo docker rmi $(sudo docker images | awk '{print $1}')
       - name: Pull docker    
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} << 'EOF'
             echo ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }} | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
             cd /home/ec2-user/docker
-            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > .env
-            echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-            echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-            echo "DB_DBNAME=${{ secrets.DB_DBNAME }}" >> .env
+            sudo echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > .env
+            sudo echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+            sudo echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+            sudo echo "DB_DBNAME=${{ secrets.DB_DBNAME }}" >> .env
             sudo docker-compose down
-            sudo docker rmi $(sudo docker images | awk '{print 1}')
             sudo docker pull ghcr.io/ivansu995/praksa:latest
             sudo docker pull ghcr.io/ivansu995/redis:latest
             sudo docker pull ghcr.io/ivansu995/nginx-proxy:latest
-            export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            export DB_USERNAME=${{ secrets.DB_USERNAME }}
-            export DB_HOST=${{ secrets.DB_HOST }}
-            export DB_DBNAME=${{ secrets.DB_DBNAME }}
             cd /home/ec2-user/docker
             sudo docker-compose up -d
           EOF
