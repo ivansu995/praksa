@@ -26,14 +26,10 @@ services:
 
   nginx-proxy:
     container_name: nginx-server
-    image: nginx:1.0.0
+    image: ghcr.io/ivansu995/nginx-proxy:latest
     restart: unless-stopped
     ports:
       - 8080:80
-    volumes:
-      - type: bind
-        source: nginx/nginx-proxy-config/
-        target: /etc/nginx/conf.d/
     depends_on:
       - php-apache-server
     networks:
