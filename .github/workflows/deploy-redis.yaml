@@ -17,6 +17,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.AWS_KEY }}
+          
 
       - name: Pull docker    
         run: |
