@@ -1,8 +1,8 @@
-name: Deploy App to EC2
+name: Deploy Redis to EC2
 
 on:
   workflow_run:
-    workflows: ["Docker Image CI for GitHub Container registry"]
+    workflows: ["Redis Docker Image CI for GitHub Container registry"]
     types:
       - completed
 
@@ -25,22 +25,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
-      - name: Stop containers and remove images
+      - name: Stop containers and remove image
         run: |
           cd /home/ec2-user/docker
           sudo docker compose down
-          sudo docker rmi ghcr.io/ivansu995/praksa:latest
+          sudo docker rmi ghcr.io/ivansu995/redis:latest
 
-      - name: Pull Docker App image
+      - name: Pull Docker Nginx image
         run: |
-          sudo docker pull ghrc.io/ivansu995/praksa:latest
+          sudo docker pull ghrc.io/ivansu995/redis:latest
           export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
           export DB_USERNAME=${{ secrets.DB_USERNAME }}
           export DB_HOST=${{ secrets.DB_HOST }}
           export DB_DBNAME=${{ secrets.DB_DBNAME }}
-          
 
-      - name: Start containers
+      - name: Run images
         run: |
           cd /home/ec2-user/docker
           sudo docker compose up -d
