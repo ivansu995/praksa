@@ -34,7 +34,6 @@ jobs:
             sudo docker pull ghcr.io/ivansu995/praksa:latest
             sudo docker pull ghcr.io/ivansu995/redis:latest
             sudo docker pull ghcr.io/ivansu995/nginx-proxy:latest
-            cd /home/ec2-user/docker
             sudo docker-compose up -d
           EOF
         # uses: appleboy/ssh-action@v0.1.2
