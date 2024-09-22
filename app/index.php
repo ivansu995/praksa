@@ -1,3 +1,9 @@
+<style>
+	body {
+		background-color: red;
+	}
+</style>
+
 <?php
 $host = getenv('DB_HOST');
 $user = getenv('DB_USERNAME');
@@ -48,8 +54,3 @@ $keys = $redis->keys('*');
 foreach ($keys as $key) echo $key . "<br>"; 
 
 ?>
-<style>
-	body {
-		background-color: red;
-	}
-</style>
