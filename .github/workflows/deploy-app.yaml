@@ -1,8 +1,11 @@
-name: Deploy App to EC2
+name: Deploy Images to EC2
 
 on:
   workflow_run:
-    workflows: ["Docker Image CI for GitHub Container registry"]
+    workflows: 
+      - "Docker Image CI for GitHub Container registry"
+      - "Nginx Proxy Docker Image CI for GitHub Container registry"
+      - "Redis Docker Image CI for GitHub Container registry"
     types:
       - completed
   # push:
@@ -25,11 +28,13 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} << 'EOF'
             echo ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }} | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
             cd /home/ec2-user/docker
-            sudo echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > .env
-            sudo echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-            sudo echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-            sudo echo "DB_DBNAME=${{ secrets.DB_DBNAME }}" >> .env
+            sudo echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" | sudo tee .env > /dev/null
+            sudo echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" | sudo tee -a .env > /dev/null
+            sudo echo "DB_HOST=${{ secrets.DB_HOST }}" | sudo tee -a .env > /dev/null
+            sudo echo "DB_DBNAME=${{ secrets.DB_DBNAME }}" | sudo tee -a .env > /dev/null
             sudo docker-compose down
             sudo docker pull ghcr.io/ivansu995/praksa:latest
+            sudo docker pull ghcr.io/ivansu995/nginx-proxy:latest
+            sudo docker pull ghcr.io/ivansu995/redis:latest
             sudo docker-compose up -d
           EOF
